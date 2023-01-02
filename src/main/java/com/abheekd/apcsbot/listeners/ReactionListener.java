@@ -22,6 +22,7 @@ public class ReactionListener extends ListenerAdapter {
 
     @Override
     public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
+        event.retrieveUser().queue();
         event.getGuild().retrieveMember(event.getUser()).queue();
         if (event.getMessageId().equals("1059507669037228073")) { // class period role message
             event.retrieveUser();
