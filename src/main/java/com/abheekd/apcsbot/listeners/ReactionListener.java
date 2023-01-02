@@ -22,15 +22,15 @@ public class ReactionListener extends ListenerAdapter {
 
     @Override
     public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
-        event.retrieveMember().queue();
+        event.getGuild().retrieveMember(event.getUser()).queue();
         if (event.getMessageId().equals("1059507669037228073")) { // class period role message
             event.retrieveUser();
             switch (event.getEmoji().asUnicode().getName()) {
                 case "1️⃣":
-                    event.getGuild().removeRoleFromMember(event.getMember(),
+                    event.getGuild().removeRoleFromMember(event.getGuild().getMember(event.getUser()),
                             event.getGuild().getRoleById("1059510790790582272")).queue();
                 case "6️⃣":
-                    event.getGuild().removeRoleFromMember(event.getMember(),
+                    event.getGuild().removeRoleFromMember(event.getGuild().getMember(event.getUser()),
                             event.getGuild().getRoleById("1059510782511030343")).queue();
             }
         }
