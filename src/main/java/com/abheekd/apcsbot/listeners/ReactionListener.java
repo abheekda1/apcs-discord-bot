@@ -7,33 +7,29 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 public class ReactionListener extends ListenerAdapter {
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
-        event.retrieveMember().queue();
-        if (event.getMessageId().equals("1059507669037228073")) { // class period role message
+        event.retrieveUser().queue((user) -> {
             switch (event.getEmoji().asUnicode().getName()) {
                 case "1️⃣":
-                    event.getGuild().addRoleToMember(event.getMember(),
-                            event.getGuild().getRoleById("1059510790790582272")).queue();
+                    event.getGuild().addRoleToMember(user, event.getGuild().getRoleById("1059510790790582272")).queue();
+                    break;
                 case "6️⃣":
-                    event.getGuild().addRoleToMember(event.getMember(),
-                            event.getGuild().getRoleById("1059510782511030343"));
+                    event.getGuild().addRoleToMember(user, event.getGuild().getRoleById("1059510782511030343")).queue();
+                    break;
             }
-        }
+        });
     }
 
     @Override
     public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
-        event.retrieveUser().queue();
-        event.getGuild().retrieveMember(event.getUser()).queue();
-        if (event.getMessageId().equals("1059507669037228073")) { // class period role message
-            event.retrieveUser();
+        event.retrieveUser().queue((user) -> {
             switch (event.getEmoji().asUnicode().getName()) {
                 case "1️⃣":
-                    event.getGuild().removeRoleFromMember(event.getGuild().getMember(event.getUser()),
-                            event.getGuild().getRoleById("1059510790790582272")).queue();
+                    event.getGuild().removeRoleFromMember(user, event.getGuild().getRoleById("1059510790790582272")).queue();
+                    break;
                 case "6️⃣":
-                    event.getGuild().removeRoleFromMember(event.getGuild().getMember(event.getUser()),
-                            event.getGuild().getRoleById("1059510782511030343")).queue();
+                    event.getGuild().removeRoleFromMember(user, event.getGuild().getRoleById("1059510782511030343")).queue();
+                    break;
             }
-        }
+        });
     }
 }
