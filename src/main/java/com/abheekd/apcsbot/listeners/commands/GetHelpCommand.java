@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 
+import java.awt.*;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -19,16 +20,18 @@ public class GetHelpCommand extends ListenerAdapter {
             if (cooldown.containsKey(event.getUser().getId())) {
                 Date complete = cooldown.get(event.getUser().getId());
                 if (complete.after(now)) {
-                    event.reply(String.format("Wait for another %d seconds dumbass spammer", (complete.getTime() - now.getTime()) / 1000)).queue();
+                    MessageEmbed embed = new EmbedBuilder().setColor(new Color(255, 50, 50)).setDescription(String.format("⌛ You can use this <t:%d:R> dumbass spammer", complete.getTime() / 1000)).build();
+                    event.replyEmbeds(embed).queue();
                     return;
                 } else {
                     cooldown.remove(event.getUser().getId());
+                    cooldown.put(event.getUser().getId(), new Date(now.getTime() + 30 * 1000));
                 }
             } else {
                 cooldown.put(event.getUser().getId(), new Date(now.getTime() + 30 * 1000));
             }
 
-            MessageCreateBuilder dataBuilder = new MessageCreateBuilder().addContent("<@1059507014306373792>");
+            MessageCreateBuilder dataBuilder = new MessageCreateBuilder().addContent("<@&1059507014306373792>");
 
             if (event.getOption("reason") != null) {
                 MessageEmbed embed = new EmbedBuilder().setAuthor(event.getUser().getAsTag(), null, event.getUser().getEffectiveAvatarUrl()).setDescription(event.getOption("reason").getAsString()).build();
